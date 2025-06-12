@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DU للدفع وشحن الرصيد</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 80px;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 40px 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .service-card {
+            background-color: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-card-header {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .service-card-header h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .service-card-body {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .service-card-body p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 30px 0;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                margin-top: 20px;
+            }
+            
+            .footer-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <img src="https://tvsumlhu.manus.space/assets/du-logo.png" alt="DU Logo" class="logo">
+            <div class="language-selector">
+                <span>العربية</span> | <a href="#" style="color: #4285f4; text-decoration: none;">English</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 20px;">خدمات DU للدفع وشحن الرصيد</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">اختر الخدمة التي تريدها من القائمة أدناه</p>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="window.location.href='/quick-pay.html'">
+                    <div class="service-card-header">
+                        <h3>الدفع السريع</h3>
+                        <p>ادفع فواتيرك بسرعة وسهولة</p>
+                    </div>
+                    <div class="service-card-body">
+                        <p>قم بدفع فواتير DU الخاصة بك بسرعة وأمان دون الحاجة إلى تسجيل الدخول. كل ما تحتاجه هو رقم الهاتف أو رقم الحساب.</p>
+                        <a href="/quick-pay.html" class="btn">الدفع الآن</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" onclick="window.location.href='/quick-recharge.html'">
+                    <div class="service-card-header">
+                        <h3>الشحن السريع</h3>
+                        <p>اشحن رصيدك بسهولة</p>
+                    </div>
+                    <div class="service-card-body">
+                        <p>قم بشحن رصيد هاتفك المتحرك أو الإنترنت المنزلي بسرعة وسهولة. اختر قيمة الشحن المناسبة لك وادفع بطريقتك المفضلة.</p>
+                        <a href="/quick-recharge.html" class="btn">الشحن الآن</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" onclick="window.location.href='/base-number.html'">
+                    <div class="service-card-header">
+                        <h3>تحديث الهوية</h3>
+                        <p>حدّث بيانات هويتك</p>
+                    </div>
+                    <div class="service-card-body">
+                        <p>قم بتحديث بيانات هويتك الإماراتية المرتبطة بحسابك في DU بسهولة وسرعة لضمان استمرار خدماتك دون انقطاع.</p>
+                        <a href="/base-number.html" class="btn">تحديث الآن</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="copyright">
+                &copy; 2025 DU. جميع الحقوق محفوظة.
+            </div>
+            <div class="footer-links">
+                <a href="#">الشروط والأحكام</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">اتصل بنا</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

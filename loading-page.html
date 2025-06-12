@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بانتظار الموافقة على الطلب - DU للدفع وشحن الرصيد</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .logo {
+            width: 80px;
+            margin-bottom: 40px;
+        }
+        
+        .loading-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 30px;
+        }
+        
+        .loading-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid transparent;
+            border-top-color: #4285f4;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .message {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+        
+        .transaction-details {
+            background-color: #1a1a1a;
+            color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .transaction-details .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .transaction-details .label {
+            color: #999;
+        }
+        
+        .home-button {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 480px) {
+            .loading-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .message {
+                font-size: 16px;
+            }
+            
+            .transaction-details {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://tvsumlhu.manus.space/assets/du-logo.png" alt="DU Logo" class="logo">
+    
+    <div class="loading-container">
+        <div class="loading-circle"></div>
+    </div>
+    
+    <div class="message">
+        بانتظار الموافقة على الطلب ومشاركة المعلومات
+    </div>
+    
+    <div class="transaction-details">
+        <div class="row">
+            <span class="value" id="transaction-number">TRX123456789</span>
+            <span class="label">:رقم المعاملة</span>
+        </div>
+        <div class="row">
+            <span class="value" id="transaction-date"></span>
+            <span class="label">:التاريخ</span>
+        </div>
+        <div class="row">
+            <span class="value" id="transaction-amount">AED</span>
+            <span class="label">:المبلغ</span>
+        </div>
+    </div>
+    
+    <a href="/index.html" class="home-button">العودة إلى الصفحة الرئيسية</a>
+
+    <script>
+        // تحديث التاريخ تلقائياً
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateString = today.toLocaleDateString('ar-AE');
+            document.getElementById('transaction-date').textContent = dateString;
+            
+            // استرجاع المبلغ من الجلسة إذا كان متاحاً
+            const amount = sessionStorage.getItem('transactionAmount');
+            if (amount) {
+                document.getElementById('transaction-amount').textContent = 'AED ' + amount;
+            }
+            
+            // استرجاع رقم المعاملة من الجلسة إذا كان متاحاً
+            const txnNumber = sessionStorage.getItem('transactionNumber');
+            if (txnNumber) {
+                document.getElementById('transaction-number').textContent = txnNumber;
+            }
+        });
+    </script>
+</body>
+</html>

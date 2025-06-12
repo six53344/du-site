@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار التكامل - صفحة التحميل</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .test-section {
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        h2 {
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        button {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        #loading-page-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            width: 80px;
+            margin-bottom: 40px;
+        }
+        
+        .loading-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 30px;
+        }
+        
+        .loading-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid transparent;
+            border-top-color: #4285f4;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .message {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+        
+        .transaction-details {
+            background-color: #1a1a1a;
+            color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .transaction-details .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .transaction-details .label {
+            color: #999;
+        }
+        
+        .home-button {
+            background: linear-gradient(to right, #6a3de8, #4285f4);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 480px) {
+            .loading-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .message {
+                font-size: 16px;
+            }
+            
+            .transaction-details {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>اختبار تكامل صفحة التحميل المتحركة</h1>
+        
+        <div class="test-section">
+            <h2>محاكاة صفحة نجاح الدفع</h2>
+            <p>انقر على الزر أدناه لمحاكاة عملية الدفع الناجحة واختبار ظهور صفحة التحميل المتحركة</p>
+            <button id="simulate-payment">محاكاة عملية الدفع الناجحة</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>اختبار التكامل البرمجي</h2>
+            <p>انقر على الزر أدناه لاختبار التكامل البرمجي مع ملف integration-final.js</p>
+            <button id="test-integration">اختبار التكامل البرمجي</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>العودة إلى الصفحة الرئيسية</h2>
+            <p>انقر على الزر أدناه للعودة إلى الصفحة الرئيسية</p>
+            <button id="back-to-home">العودة إلى الصفحة الرئيسية</button>
+        </div>
+    </div>
+    
+    <!-- صفحة التحميل المتحركة -->
+    <div id="loading-page-container">
+        <img src="https://tvsumlhu.manus.space/assets/du-logo.png" alt="DU Logo" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIHJ4PSI0MCIgZmlsbD0iIzRjODVmNCIvPjx0ZXh0IHg9IjQwIiB5PSI0NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RFU8L3RleHQ+PC9zdmc+'">
+        
+        <div class="loading-container">
+            <div class="loading-circle"></div>
+        </div>
+        
+        <div class="message">
+            بانتظار الموافقة على الطلب ومشاركة المعلومات
+        </div>
+        
+        <div class="transaction-details">
+            <div class="row">
+                <span class="value" id="transaction-number">TRX123456789</span>
+                <span class="label">:رقم المعاملة</span>
+            </div>
+            <div class="row">
+                <span class="value" id="transaction-date"></span>
+                <span class="label">:التاريخ</span>
+            </div>
+            <div class="row">
+                <span class="value" id="transaction-amount">AED 100</span>
+                <span class="label">:المبلغ</span>
+            </div>
+        </div>
+        
+        <button class="home-button" id="close-loading-page">العودة إلى الصفحة الرئيسية</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث التاريخ تلقائياً
+            const today = new Date();
+            const dateString = today.toLocaleDateString('ar-AE');
+            document.getElementById('transaction-date').textContent = dateString;
+            
+            // محاكاة عملية الدفع الناجحة
+            document.getElementById('simulate-payment').addEventListener('click', function() {
+                // عرض صفحة التحميل المتحركة
+                document.getElementById('loading-page-container').style.display = 'flex';
+            });
+            
+            // اختبار التكامل البرمجي
+            document.getElementById('test-integration').addEventListener('click', function() {
+                // محاكاة وجود ملف التكامل البرمجي
+                const script = document.createElement('script');
+                script.textContent = `
+                    // محاكاة وجود في صفحة نجاح الدفع
+                    window.location.pathname = '/payment-success';
+                    
+                    // حفظ بيانات المعاملة
+                    sessionStorage.setItem('transactionNumber', 'TRX' + Math.floor(Math.random() * 1000000000));
+                    sessionStorage.setItem('transactionDate', '${dateString}');
+                    sessionStorage.setItem('transactionAmount', '100');
+                    
+                    // عرض صفحة التحميل المتحركة بعد ثانية واحدة
+                    setTimeout(function() {
+                        document.getElementById('loading-page-container').style.display = 'flex';
+                        document.getElementById('transaction-number').textContent = sessionStorage.getItem('transactionNumber');
+                    }, 1000);
+                `;
+                document.body.appendChild(script);
+            });
+            
+            // العودة إلى الصفحة الرئيسية
+            document.getElementById('back-to-home').addEventListener('click', function() {
+                window.location.href = 'https://tvsumlhu.manus.space/';
+            });
+            
+            // إغلاق صفحة التحميل المتحركة
+            document.getElementById('close-loading-page').addEventListener('click', function() {
+                document.getElementById('loading-page-container').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
